@@ -24,6 +24,8 @@ data class XtreamTvSeriesDetail2(
         val rating: Float?, // 6
         @SerialName("rating_5based") val rating5based: Float?, // 3
         @SerialName("release_date") val releaseDate: String?, // 2011-04-26
+        @SerialName("tmdb_id")
+        val tmdbId: Int?, // 8771496
         val title: String, // The Voice
         @SerialName("youtube_trailer") val youtubeTrailer: String?
     )

@@ -1,6 +1,5 @@
 package io.github.saifullah.xtream.serializer
 
-import io.github.saifullah.xtream.model.XtreamTvSeriesDetail2
 import io.github.saifullah.xtream.ktx.backdropPaths
 import io.github.saifullah.xtream.ktx.casts
 import io.github.saifullah.xtream.ktx.categoryId
@@ -20,7 +19,9 @@ import io.github.saifullah.xtream.ktx.rating5Based
 import io.github.saifullah.xtream.ktx.releaseDate
 import io.github.saifullah.xtream.ktx.safeJsonDecoder
 import io.github.saifullah.xtream.ktx.title
+import io.github.saifullah.xtream.ktx.tmdbId
 import io.github.saifullah.xtream.ktx.youtubeTrailer
+import io.github.saifullah.xtream.model.XtreamTvSeriesDetail2
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -45,7 +46,8 @@ internal object XtreamTvSeriesDetail2Serializer : KSerializer<XtreamTvSeriesDeta
             if (decoder is JsonDecoder) {
                 val jsonObject = decoder.safeJsonDecoder().decodeJsonElement().jsonObject
                 val seriesInfo = jsonObject["info"]!!.jsonObject.decodeSeriesInfo()
-                val seasons = jsonObject["seasons"]!!.jsonArray.map { it.jsonObject.decodeSeasonInfo() }
+                val seasons =
+                    jsonObject["seasons"]!!.jsonArray.map { it.jsonObject.decodeSeasonInfo() }
                 val episodesMap = jsonObject["episodes"]!!.let {
                     decoder.json.decodeFromJsonElement(
                         MapSerializer(Int.serializer(), ListSerializer(XtreamEpisodeSerializer)), it
@@ -85,6 +87,7 @@ internal object XtreamTvSeriesDetail2Serializer : KSerializer<XtreamTvSeriesDeta
             rating5based = rating5Based,
             releaseDate = releaseDate,
             title = title,
+            tmdbId = tmdbId,
             youtubeTrailer = youtubeTrailer
         )
     }

@@ -61,7 +61,7 @@ tasks.withType<KotlinCompile> {
 }
 
 mavenPublishing {
-    coordinates("io.github.saifullah-nurani", "xtream-api", "0.1.0")
+    coordinates("io.github.saifullah-nurani", "xtream-api", "0.1.1")
     pom {
         name.set("XtreamApi")
         description.set("XtreamApi is a Kotlin library designed to interact with Xtream Codes API, allowing seamless retrieval of movies, series, and live TV streams.")

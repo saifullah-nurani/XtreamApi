@@ -16,6 +16,7 @@ import io.github.saifullah.xtream.ktx.rating5Based
 import io.github.saifullah.xtream.ktx.releaseDate
 import io.github.saifullah.xtream.ktx.safeJsonDecoder
 import io.github.saifullah.xtream.ktx.title
+import io.github.saifullah.xtream.ktx.tmdbId
 import io.github.saifullah.xtream.ktx.youtubeTrailer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
@@ -50,6 +51,7 @@ internal object XtreamTvSeriesDetailInfoSerializer : KSerializer<XtreamTvSeriesD
                     rating5based = jsonObject.rating5Based,
                     releaseDate = jsonObject.releaseDate,
                     title = jsonObject.title,
+                    tmdbId = jsonObject.tmdbId,
                     youtubeTrailer = jsonObject.youtubeTrailer
                 )
             } else decoder.decodeSerializableValue(serializer())
