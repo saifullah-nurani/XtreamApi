@@ -1,6 +1,5 @@
 package io.github.saifullah.xtream.endpoint
 
-import io.github.saifullah.xtream.endpoint.XtreamApi
 import io.github.saifullah.xtream.model.XtreamAuth
 import io.github.saifullah.xtream.model.XtreamAuthCredentials
 import io.ktor.client.HttpClient
@@ -27,7 +26,7 @@ class Auth internal constructor(override val httpClient: HttpClient) : XtreamApi
      * @throws ClientRequestException if the request fails due to an HTTP error.
      * @throws SerializationException if the response cannot be parsed.
      */
-    suspend fun auth(credentials: XtreamAuthCredentials? = null): XtreamAuth {
+    suspend operator fun invoke(credentials: XtreamAuthCredentials? = null): XtreamAuth {
         return httpClient.get { url(credentials) }.body<XtreamAuth>()
     }
 }
