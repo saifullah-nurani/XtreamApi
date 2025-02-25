@@ -2,6 +2,7 @@ package io.github.saifullah.xtream
 
 import io.github.saifullah.xtream.core.XtreamClientFactory
 import io.github.saifullah.xtream.endpoint.Auth
+import io.github.saifullah.xtream.endpoint.Custom
 import io.github.saifullah.xtream.endpoint.Movie
 import io.github.saifullah.xtream.endpoint.TvSeries
 import io.ktor.client.HttpClient
@@ -24,6 +25,7 @@ class Xtream internal constructor(clientConfig: XtreamClientConfig) {
     val auth by endPoint(::Auth)
     val movie by endPoint(::Movie)
     val tvSeries by endPoint(::TvSeries)
+    val custom by endPoint(::Custom)
 
     private inline fun <T> endPoint(crossinline client: HttpClient.() -> T) = lazy {
         client.invoke(httpClient)
