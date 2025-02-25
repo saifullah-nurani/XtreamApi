@@ -6,6 +6,7 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Url
+import kotlin.jvm.JvmName
 
 /**
  * A helper class for making HTTP requests using Ktor's HttpClient.
@@ -20,7 +21,7 @@ class Custom internal constructor(override val httpClient: HttpClient) : XtreamA
      * @param block The configuration block for the HTTP request.
      * @return The HttpResponse object containing the response data.
      */
-    suspend fun get(block: HttpRequestBuilder.() -> Unit): HttpResponse {
+    suspend fun getHttpResponse(block: HttpRequestBuilder.() -> Unit): HttpResponse {
         return httpClient.get(block)
     }
 
@@ -29,7 +30,7 @@ class Custom internal constructor(override val httpClient: HttpClient) : XtreamA
      * @param builder The pre-configured request builder.
      * @return The HttpResponse object.
      */
-    suspend fun get(builder: HttpRequestBuilder): HttpResponse {
+    suspend fun getHttpResponse(builder: HttpRequestBuilder): HttpResponse {
         return httpClient.get(builder = builder)
     }
 
@@ -39,7 +40,7 @@ class Custom internal constructor(override val httpClient: HttpClient) : XtreamA
      * @param block The request configuration block.
      * @return The HttpResponse object.
      */
-    suspend fun get(urlString: String, block: HttpRequestBuilder.() -> Unit): HttpResponse {
+    suspend fun getHttpResponse(urlString: String, block: HttpRequestBuilder.() -> Unit): HttpResponse {
         return httpClient.get(urlString, block)
     }
 
@@ -49,7 +50,7 @@ class Custom internal constructor(override val httpClient: HttpClient) : XtreamA
      * @param block The request configuration block.
      * @return The HttpResponse object.
      */
-    suspend fun get(url: Url, block: HttpRequestBuilder.() -> Unit): HttpResponse {
+    suspend fun getHttpResponse(url: Url, block: HttpRequestBuilder.() -> Unit): HttpResponse {
         return httpClient.get(url, block)
     }
 
@@ -87,7 +88,8 @@ class Custom internal constructor(override val httpClient: HttpClient) : XtreamA
      * @param block The request configuration block.
      * @return The response body deserialized into type [T].
      */
-    suspend inline fun <reified T> get(url: Url, block: HttpRequestBuilder.() -> Unit): T {
+
+    suspend inline fun <reified T>  get(url: Url, block: HttpRequestBuilder.() -> Unit): T {
         return httpClient.get(url, block).body<T>()
     }
 }
