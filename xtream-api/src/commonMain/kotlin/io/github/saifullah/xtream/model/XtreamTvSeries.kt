@@ -1,5 +1,6 @@
 package io.github.saifullah.xtream.model
 
+import io.github.saifullah.xtream.core.StreamType
 import io.github.saifullah.xtream.serializer.XtreamTvSeriesSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -23,7 +24,7 @@ data class XtreamTvSeries(
     @SerialName("rating_5based") val rating5based: Float?, // 3.5
     @SerialName("release_date") val releaseDate: String?, // 2014-01-25
     @SerialName("series_id") val seriesId: Long, // 1
-    @SerialName("stream_type") val streamType: String, // series
+    val streamType: StreamType, // series
     val title: String, // Black Sails
     @SerialName("youtube_trailer") val youtubeTrailer: String? // rT2Y5jjBNpQ
 )

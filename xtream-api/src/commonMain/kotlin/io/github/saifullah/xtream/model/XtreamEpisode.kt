@@ -7,14 +7,14 @@ import kotlinx.serialization.Serializable
 @Serializable(with = XtreamEpisodeSerializer::class)
 data class XtreamEpisode(
     val added: Long?, // 1738672268
-    @SerialName("container_extension") val containerExtension: String, // mkv
+    @SerialName("container_extension") val containerExtension: String?, // mkv
     @SerialName("custom_sid") val customSid: Int?,
     @SerialName("direct_source") val directSource: String?,
     @SerialName("episode_num") val episodeNum: Int, // 1
     val id: Long, // 9263103
     val season: Int, // 27
-    val title: String, // The Voice - S27E01 - The Blind Auditions Season Premiere
-    val info: Info,
+    val title: String?, // The Voice - S27E01 - The Blind Auditions Season Premiere
+    val info: Info?,
 ) {
     data class Info(
         val bitrate: Int?, // 0

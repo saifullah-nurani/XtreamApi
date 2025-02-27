@@ -1,5 +1,6 @@
 package io.github.saifullah.xtream.serializer
 
+import io.github.saifullah.xtream.core.StreamType
 import io.github.saifullah.xtream.model.XtreamTvSeries
 import io.github.saifullah.xtream.ktx.backdropPaths
 import io.github.saifullah.xtream.ktx.casts
@@ -16,7 +17,6 @@ import io.github.saifullah.xtream.ktx.rating
 import io.github.saifullah.xtream.ktx.rating5Based
 import io.github.saifullah.xtream.ktx.releaseDate
 import io.github.saifullah.xtream.ktx.safeJsonDecoder
-import io.github.saifullah.xtream.ktx.streamType
 import io.github.saifullah.xtream.ktx.title
 import io.github.saifullah.xtream.ktx.youtubeTrailer
 import kotlinx.serialization.KSerializer
@@ -52,7 +52,7 @@ internal object XtreamTvSeriesSerializer : KSerializer<XtreamTvSeries> {
                     rating5based = jsonObject.rating5Based,
                     releaseDate = jsonObject.releaseDate,
                     seriesId = jsonObject["series_id"]?.longOrNull() ?: 0,
-                    streamType = jsonObject.streamType,
+                    streamType = StreamType.TvSeries,
                     title = jsonObject.title,
                     youtubeTrailer = jsonObject.youtubeTrailer
                 )

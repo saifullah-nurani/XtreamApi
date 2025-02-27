@@ -16,7 +16,7 @@ internal val JsonObject.customSid: Int?
     get() = this["custom_sid"]?.intOrNull()
 
 internal val JsonObject.title: String
-    get() = this["title"]?.contentOrNull() ?: this["name"]?.contentOrNull()!!
+    get() = this["title"]?.contentOrNull() ?: this["name"]?.contentOrNull()?:"Unknown"
 
 internal val JsonObject.bitrate: Int?
     get() = this["bitrate"]?.intOrNull()
@@ -84,7 +84,7 @@ internal val JsonObject.num: Int
 internal val JsonObject.streamIcon: String?
     get() = this["stream_icon"]?.contentOrNull()
 
-internal val JsonObject.streamType: String
-    get() = this["stream_type"]?.contentOrNull()
-        ?: throw SerializationException("Missing required field 'stream_type'")
+//internal val JsonObject.streamType: String
+//    get() = this["stream_type"]?.contentOrNull()
+//        ?: throw SerializationException("Missing required field 'stream_type'")
 

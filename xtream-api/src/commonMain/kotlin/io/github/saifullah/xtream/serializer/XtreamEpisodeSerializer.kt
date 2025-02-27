@@ -40,7 +40,7 @@ object XtreamEpisodeSerializer : KSerializer<XtreamEpisode?> {
                     val infoJsonObject = jsonObject["info"]?.jsonObjectOrNull()
                     XtreamEpisode(
                         added = jsonObject.added,
-                        containerExtension = jsonObject.containerExtension!!,
+                        containerExtension = jsonObject.containerExtension,
                         customSid = jsonObject.customSid,
                         directSource = jsonObject.directSource,
                         episodeNum = jsonObject["episode_num"]?.intOrNull() ?: 0,

@@ -1,5 +1,6 @@
 package io.github.saifullah.xtream.model
 
+import io.github.saifullah.xtream.core.StreamType
 import io.github.saifullah.xtream.serializer.XtreamMovieSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -22,7 +23,7 @@ data class XtreamMovie(
     @SerialName("release_date") val releaseDate: String?, // 2022-01-28
     @SerialName("stream_icon") val streamIcon: String?, // https://image.tmdb.org/t/p/w600_and_h900_bestv2/wtUaJFqFZMFjgN7KM0ikIFiemYB.jpg
     @SerialName("stream_id") val streamId: Long, // 8771496
-    @SerialName("stream_type") val streamType: String, // movie
+    val streamType: StreamType, // movie
     val title: String, // Seperti Dendam, Rindu Harus Dibayar Tuntas - 2021
     @SerialName("youtube_trailer") val youtubeTrailer: String?, // wC_tvlc_KgU
     @SerialName("tmdb_id") val tmdbId: Int?

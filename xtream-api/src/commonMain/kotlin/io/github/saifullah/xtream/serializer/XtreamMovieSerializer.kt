@@ -1,5 +1,6 @@
 package io.github.saifullah.xtream.serializer
 
+import io.github.saifullah.xtream.core.StreamType
 import io.github.saifullah.xtream.ktx.added
 import io.github.saifullah.xtream.ktx.casts
 import io.github.saifullah.xtream.ktx.categoryId
@@ -17,7 +18,6 @@ import io.github.saifullah.xtream.ktx.rating5Based
 import io.github.saifullah.xtream.ktx.releaseDate
 import io.github.saifullah.xtream.ktx.safeJsonDecoder
 import io.github.saifullah.xtream.ktx.streamIcon
-import io.github.saifullah.xtream.ktx.streamType
 import io.github.saifullah.xtream.ktx.title
 import io.github.saifullah.xtream.ktx.tmdbId
 import io.github.saifullah.xtream.ktx.youtubeTrailer
@@ -57,7 +57,7 @@ internal object XtreamMovieSerializer : KSerializer<XtreamMovie> {
                     releaseDate = jsonObject.releaseDate,
                     streamIcon = jsonObject.streamIcon,
                     streamId = jsonObject["stream_id"]?.longOrNull()!!,
-                    streamType = jsonObject.streamType,
+                    streamType = StreamType.Movie,
                     title = jsonObject.title,
                     youtubeTrailer = jsonObject.youtubeTrailer,
                     tmdbId = jsonObject.tmdbId

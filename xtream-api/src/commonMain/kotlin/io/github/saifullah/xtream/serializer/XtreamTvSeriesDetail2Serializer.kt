@@ -35,7 +35,6 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.serializer
 
@@ -48,14 +47,20 @@ internal object XtreamTvSeriesDetail2Serializer : KSerializer<XtreamTvSeriesDeta
             if (decoder is JsonDecoder) {
                 val jsonObject = decoder.safeJsonDecoder().decodeJsonElement().jsonObject
                 val seriesInfo = jsonObject["info"]?.jsonObjectOrNull()?.decodeSeriesInfo()
-                val seasons = jsonObject["seasons"]?.jsonArrayOrNull()?.map { it.jsonObject.decodeSeasonInfo() }
+                val seasons = jsonObject["seasons"]?.jsonArrayOrNull()
+                    ?.map { it.jsonObject.decodeSeasonInfo() }
                 val episodesMap = jsonObject["episodes"]?.let {
                     decoder.json.decodeFromJsonElement(
-                        MapSerializer(Int.serializer(), ListSerializer(XtreamEpisodeSerializer)), it
+                        MapSerializer(
+                            Int.serializer(),
+                            ListSerializer(XtreamEpisodeSerializer)
+                        ), it
                     )
                 }
+
                 val seasonsWithEpisodes = seasons?.map { seasonInfo ->
                     val seasonNumber = seasonInfo.seasonNumber
+                    println("seasonNumber: $seasonNumber")
                     val episodes = episodesMap?.get(seasonNumber) ?: emptyList()
                     XtreamTvSeriesDetail2.Season(info = seasonInfo, episodes = episodes)
                 }

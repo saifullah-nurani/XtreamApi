@@ -70,7 +70,7 @@ object XtreamMovieDetailSerializer : KSerializer<XtreamMovieDetail> {
                         added = movieData.added,
                         categoryId = movieData.categoryId,
                         categoryIds = movieData.categoryIds,
-                        containerExtension = movieData.containerExtension!!,
+                        containerExtension = movieData.containerExtension,
                         customSid = movieData.customSid,
                         directSource = movieData.directSource,
                         streamId = movieData["stream_id"]?.longOrNull()!!,

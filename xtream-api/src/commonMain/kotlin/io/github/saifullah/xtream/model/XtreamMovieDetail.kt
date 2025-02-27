@@ -36,7 +36,7 @@ data class XtreamMovieDetail(
         val added: Long?, // 1730877061
         @SerialName("category_id") val categoryId: Int?, // 478
         @SerialName("category_ids") val categoryIds: List<Int>?,
-        @SerialName("container_extension") val containerExtension: String, // mkv
+        @SerialName("container_extension") val containerExtension: String?, // mkv
         @SerialName("custom_sid") val customSid: Int?,
         @SerialName("direct_source") val directSource: String?,
         @SerialName("stream_id") val streamId: Long, // 8771496
