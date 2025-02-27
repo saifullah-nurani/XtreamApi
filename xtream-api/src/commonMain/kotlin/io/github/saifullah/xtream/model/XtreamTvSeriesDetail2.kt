@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable(with = XtreamTvSeriesDetail2Serializer::class)
 data class XtreamTvSeriesDetail2(
-    val info: Info,
+    val info: Info?,
     val seasons: List<Season>
 ) {
     @Serializable
@@ -33,7 +33,7 @@ data class XtreamTvSeriesDetail2(
     @Serializable
     data class Season(
         val info: Info?,
-        val episodes: List<XtreamEpisode>
+        val episodes: List<XtreamEpisode?>
     ) {
         @Serializable
         data class Info(

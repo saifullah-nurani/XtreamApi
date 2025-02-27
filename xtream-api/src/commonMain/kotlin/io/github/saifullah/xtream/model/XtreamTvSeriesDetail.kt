@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class XtreamTvSeriesDetail(
-    val episodes: Map<Int, List<XtreamEpisode>>,
-    val info: Info,
-    val seasons: List<XtreamSeason>
+    val episodes: Map<Int, List<XtreamEpisode?>>,
+    val info: Info?,
+    val seasons: List<XtreamSeason?>
 ) {
     @Serializable(with = XtreamTvSeriesDetailInfoSerializer::class)
     data class Info(

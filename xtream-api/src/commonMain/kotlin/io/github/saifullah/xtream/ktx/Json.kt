@@ -5,6 +5,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
@@ -124,4 +125,22 @@ internal inline fun <reified T> JsonPrimitive.parseToList(): List<T>? {
  */
 internal fun Decoder.safeJsonDecoder(): JsonDecoder {
     return this as? JsonDecoder ?: throw SerializationException("Expected JsonDecoder")
+}
+
+/**
+ * Safely casts a [JsonElement] to a [JsonObject] if it is of the correct type.
+ *
+ * @return The [JsonObject] if the element is a valid JSON object, otherwise `null`.
+ */
+internal fun JsonElement.jsonObjectOrNull(): JsonObject? {
+    return if (this is JsonObject) this else null
+}
+
+/**
+ * Safely casts a [JsonElement] to a [JsonArray] if it is of the correct type.
+ *
+ * @return The [JsonArray] if the element is a valid JSON array, otherwise `null`.
+ */
+internal fun JsonElement.jsonArrayOrNull(): JsonArray? {
+    return if (this is JsonArray) this else null
 }

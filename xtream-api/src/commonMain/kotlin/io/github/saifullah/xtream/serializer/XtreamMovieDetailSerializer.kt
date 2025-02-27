@@ -15,6 +15,7 @@ import io.github.saifullah.xtream.ktx.directSource
 import io.github.saifullah.xtream.ktx.duration
 import io.github.saifullah.xtream.ktx.durationInSecond
 import io.github.saifullah.xtream.ktx.genres
+import io.github.saifullah.xtream.ktx.jsonObjectOrNull
 import io.github.saifullah.xtream.ktx.longOrNull
 import io.github.saifullah.xtream.ktx.movieImage
 import io.github.saifullah.xtream.ktx.plot
@@ -43,27 +44,27 @@ object XtreamMovieDetailSerializer : KSerializer<XtreamMovieDetail> {
         return try {
             if (decoder is JsonDecoder) {
                 val jsonObject = decoder.safeJsonDecoder().decodeJsonElement().jsonObject
-                val info = jsonObject["info"]?.jsonObject!!
-                val movieData = jsonObject["movie_data"]?.jsonObject!!
+                val info = jsonObject["info"]?.jsonObject?.jsonObjectOrNull()
+                val movieData = jsonObject["movie_data"]!!.jsonObject
                 XtreamMovieDetail(
                     info = XtreamMovieDetail.Info(
-                        casts = info.casts,
-                        age = info["age"]?.contentOrNull(),
-                        backdropPath = info.backdropPaths,
-                        bitrate = info.bitrate,
-                        country = info["country"]?.contentOrNull(),
-                        coverBig = info.coverBig,
-                        description = info.plot,
-                        crews = info.crews,
-                        duration = info.duration,
-                        durationSecs = info.durationInSecond,
-                        genres = info.genres,
-                        movieImage = info.movieImage,
-                        name = info.title,
-                        rating = info.rating,
-                        releaseDate = info.releaseDate,
-                        tmdbId = info.tmdbId,
-                        youtubeTrailer = info.youtubeTrailer
+                        casts = info?.casts,
+                        age = info?.get("age")?.contentOrNull(),
+                        backdropPath = info?.backdropPaths,
+                        bitrate = info?.bitrate,
+                        country = info?.get("country")?.contentOrNull(),
+                        coverBig = info?.coverBig,
+                        description = info?.plot,
+                        crews = info?.crews,
+                        duration = info?.duration,
+                        durationSecs = info?.durationInSecond,
+                        genres = info?.genres,
+                        movieImage = info?.movieImage,
+                        name = info?.title ?: "Unknown",
+                        rating = info?.rating,
+                        releaseDate = info?.releaseDate,
+                        tmdbId = info?.tmdbId,
+                        youtubeTrailer = info?.youtubeTrailer
                     ),
                     movieData = XtreamMovieDetail.MovieData(
                         added = movieData.added,

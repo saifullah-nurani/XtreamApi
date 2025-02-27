@@ -30,7 +30,9 @@ data class XtreamAuth(
         val auth: Int, // 1
         @SerialName("created_at") val createdAt: Long, // 1709026755
         @SerialName("exp_date") val expDate: Long, // 1743068355
-        @SerialName("max_connections") val maxConnections: String?, // 1
+        @SerialName("is_trial") val isTrial: String?,
+        @SerialName("max_connections")
+        val maxConnections: String?, // 1
         val message: String, // Welcome to xyz
         val password: String, //password
         val status: String, // Active

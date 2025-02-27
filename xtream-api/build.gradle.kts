@@ -54,14 +54,14 @@ android {
 }
 
 tasks.withType<KotlinCompile> {
-    compilerOptions{
+    compilerOptions {
         jvmTarget.set(JvmTarget.JVM_21)
         freeCompilerArgs.add("-Xjvm-default=all")
     }
 }
 
 mavenPublishing {
-    coordinates("io.github.saifullah-nurani", "xtream-api", "0.1.2")
+    coordinates("io.github.saifullah-nurani", "xtream-api", "0.1.3")
     pom {
         name.set("XtreamApi")
         description.set("XtreamApi is a Kotlin library designed to interact with Xtream Codes API, allowing seamless retrieval of movies, series, and live TV streams.")

@@ -21,7 +21,6 @@ class Xtream internal constructor(clientConfig: XtreamClientConfig) {
     private val httpClient: HttpClient by lazy {
         XtreamClientFactory.create(clientConfig)
     }
-
     val auth by endPoint(::Auth)
     val movie by endPoint(::Movie)
     val tvSeries by endPoint(::TvSeries)

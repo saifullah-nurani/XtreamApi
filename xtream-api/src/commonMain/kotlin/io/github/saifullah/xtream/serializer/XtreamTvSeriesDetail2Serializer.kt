@@ -12,6 +12,8 @@ import io.github.saifullah.xtream.ktx.episodeRunTime
 import io.github.saifullah.xtream.ktx.floatOrNull
 import io.github.saifullah.xtream.ktx.genres
 import io.github.saifullah.xtream.ktx.intOrNull
+import io.github.saifullah.xtream.ktx.jsonArrayOrNull
+import io.github.saifullah.xtream.ktx.jsonObjectOrNull
 import io.github.saifullah.xtream.ktx.lastModified
 import io.github.saifullah.xtream.ktx.plot
 import io.github.saifullah.xtream.ktx.rating
@@ -45,25 +47,24 @@ internal object XtreamTvSeriesDetail2Serializer : KSerializer<XtreamTvSeriesDeta
         return try {
             if (decoder is JsonDecoder) {
                 val jsonObject = decoder.safeJsonDecoder().decodeJsonElement().jsonObject
-                val seriesInfo = jsonObject["info"]!!.jsonObject.decodeSeriesInfo()
-                val seasons =
-                    jsonObject["seasons"]!!.jsonArray.map { it.jsonObject.decodeSeasonInfo() }
-                val episodesMap = jsonObject["episodes"]!!.let {
+                val seriesInfo = jsonObject["info"]?.jsonObjectOrNull()?.decodeSeriesInfo()
+                val seasons = jsonObject["seasons"]?.jsonArrayOrNull()?.map { it.jsonObject.decodeSeasonInfo() }
+                val episodesMap = jsonObject["episodes"]?.let {
                     decoder.json.decodeFromJsonElement(
                         MapSerializer(Int.serializer(), ListSerializer(XtreamEpisodeSerializer)), it
                     )
                 }
-                val seasonsWithEpisodes = seasons.map { seasonInfo ->
+                val seasonsWithEpisodes = seasons?.map { seasonInfo ->
                     val seasonNumber = seasonInfo.seasonNumber
-                    val episodes = episodesMap[seasonNumber] ?: emptyList()
+                    val episodes = episodesMap?.get(seasonNumber) ?: emptyList()
                     XtreamTvSeriesDetail2.Season(info = seasonInfo, episodes = episodes)
                 }
 
-                XtreamTvSeriesDetail2(info = seriesInfo, seasons = seasonsWithEpisodes)
+                XtreamTvSeriesDetail2(info = seriesInfo, seasons = seasonsWithEpisodes.orEmpty())
             } else
                 decoder.decodeSerializableValue(serializer())
         } catch (e: Exception) {
-            throw SerializationException("Error deserializing XtreamMovie", e)
+            throw SerializationException("Error deserializing XtreamTvSeriesDetail", e)
         }
     }
 
