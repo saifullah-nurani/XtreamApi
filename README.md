@@ -288,32 +288,6 @@ actual fun createXtreamClient(): Xtream {
 }
 ```
 
-#### Use in Shared ViewModel
-
-```kotlin
-// commonMain/src/commonMain/kotlin/MoviesViewModel.kt
-import io.github.saifullah.xtream.Xtream
-import io.github.saifullah.xtream.model.XtreamMovie
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-
-class MoviesViewModel(private val xtream: Xtream) {
-    
-    private val _movies = MutableStateFlow<List<XtreamMovie>>(emptyList())
-    val movies: StateFlow<List<XtreamMovie>> = _movies.asStateFlow()
-    
-    suspend fun loadMovies() {
-        try {
-            _movies.value = xtream.movie.getMovies()
-        } catch (e: Exception) {
-            // Handle error
-            println("Error loading movies: ${e.message}")
-        }
-    }
-}
-```
-
 ## 📚 API Reference
 
 ### Authentication
@@ -506,62 +480,6 @@ try {
     // Other errors
     println("Error: ${e.message}")
 }
-```
-
-## 🔍 Data Models
-
-### XtreamMovie
-
-```kotlin
-data class XtreamMovie(
-    val streamId: Long,
-    val title: String,
-    val plot: String?,
-    val rating: Float?,
-    val releaseDate: String?,
-    val streamIcon: String?,
-    val genres: List<String>?,
-    val casts: List<String>?,
-    val crews: List<String>?,
-    // ... more fields
-)
-```
-
-### XtreamMovieDetail
-
-```kotlin
-data class XtreamMovieDetail(
-    val info: Info,
-    val movieData: MovieData
-) {
-    data class Info(
-        val name: String,
-        val description: String?,
-        val rating: Float?,
-        val duration: String?,
-        val genres: List<String>?,
-        // ... more fields
-    )
-    
-    data class MovieData(
-        val streamId: Long,
-        val title: String,
-        // ... more fields
-    )
-}
-```
-
-### XtreamTvSeries
-
-```kotlin
-data class XtreamTvSeries(
-    val seriesId: Long,
-    val title: String,
-    val plot: String?,
-    val cover: String?,
-    val rating: Float?,
-    // ... more fields
-)
 ```
 
 ## 🤝 Contributing
