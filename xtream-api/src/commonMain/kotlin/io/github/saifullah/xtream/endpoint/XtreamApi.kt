@@ -38,7 +38,7 @@ internal interface XtreamApi {
         val isValidCredentials = credentials?.isValid() ?: false
 
         if (isValidCredentials) {
-            val urlBuilder = credentials!!.urlBuilder()
+            val urlBuilder = credentials.urlBuilder()
             action?.let { urlBuilder.parameters.append("action", it) }
             urlBuilder.parameters.parameterBuilder()
             url(urlBuilder.buildString())
@@ -46,7 +46,7 @@ internal interface XtreamApi {
             // Fallback to default URL with action parameter
             url {
                 action?.let { parameters.append("action", it) }
-                parameterBuilder()
+                parameters.parameterBuilder()
             }
         }
     }
