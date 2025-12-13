@@ -1,7 +1,7 @@
 # Xtream API
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-blue.svg)](https://kotlinlang.org)
-[![Version](https://img.shields.io/badge/version-0.1.6-green.svg)](https://github.com/saifullah-nurani/XtreamApi)
+[![Version](https://img.shields.io/badge/version-0.1.7-green.svg)](https://github.com/saifullah-nurani/XtreamApi)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **Xtream API** is a modern, type-safe Kotlin Multiplatform library designed to seamlessly interact with Xtream Codes API. It enables effortless retrieval of movies, TV series, live TV streams, and more across Android, iOS, and JVM platforms.
