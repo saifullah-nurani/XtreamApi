@@ -6,7 +6,6 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Url
-import kotlin.jvm.JvmName
 
 /**
  * A helper class for making HTTP requests using Ktor's HttpClient.
@@ -88,8 +87,7 @@ class Custom internal constructor(override val httpClient: HttpClient) : XtreamA
      * @param block The request configuration block.
      * @return The response body deserialized into type [T].
      */
-
-    suspend inline fun <reified T>  get(url: Url, block: HttpRequestBuilder.() -> Unit): T {
+    suspend inline fun <reified T> get(url: Url, block: HttpRequestBuilder.() -> Unit): T {
         return httpClient.get(url, block).body<T>()
     }
 }

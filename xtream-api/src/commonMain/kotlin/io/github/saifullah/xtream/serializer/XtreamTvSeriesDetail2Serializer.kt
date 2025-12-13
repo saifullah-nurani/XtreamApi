@@ -23,6 +23,7 @@ import io.github.saifullah.xtream.ktx.safeJsonDecoder
 import io.github.saifullah.xtream.ktx.title
 import io.github.saifullah.xtream.ktx.tmdbId
 import io.github.saifullah.xtream.ktx.youtubeTrailer
+import io.github.saifullah.xtream.model.XtreamEpisode
 import io.github.saifullah.xtream.model.XtreamTvSeriesDetail2
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
@@ -40,38 +41,79 @@ import kotlinx.serialization.serializer
 
 internal object XtreamTvSeriesDetail2Serializer : KSerializer<XtreamTvSeriesDetail2> {
     override val descriptor: SerialDescriptor
-        get() = buildClassSerialDescriptor("XtreamTvSeriesDetail")
+        get() = buildClassSerialDescriptor("XtreamTvSeriesDetail2")
 
     override fun deserialize(decoder: Decoder): XtreamTvSeriesDetail2 {
-        return try {
-            if (decoder is JsonDecoder) {
-                val jsonObject = decoder.safeJsonDecoder().decodeJsonElement().jsonObject
-                val seriesInfo = jsonObject["info"]?.jsonObjectOrNull()?.decodeSeriesInfo()
-                val seasons = jsonObject["seasons"]?.jsonArrayOrNull()
-                    ?.map { it.jsonObject.decodeSeasonInfo() }
-                val episodesMap = jsonObject["episodes"]?.let {
+        if (decoder !is JsonDecoder)
+            return decoder.decodeSerializableValue(serializer())
+
+        try {
+            val jsonObject = decoder.safeJsonDecoder().decodeJsonElement().jsonObject
+
+            val seriesInfo = jsonObject["info"]
+                ?.jsonObjectOrNull()
+                ?.decodeSeriesInfo()
+
+            val seasons = jsonObject["seasons"]
+                ?.jsonArrayOrNull()
+                ?.map { it.jsonObject.decodeSeasonInfo() }
+                ?.takeIf { it.isNotEmpty() }
+
+            val episodesMap: Map<Int, List<XtreamEpisode?>> =
+                jsonObject["episodes"]?.let {
                     decoder.json.decodeFromJsonElement(
                         MapSerializer(
                             Int.serializer(),
                             ListSerializer(XtreamEpisodeSerializer)
-                        ), it
+                        ),
+                        it
                     )
+                } ?: emptyMap()
+
+            val seasonsWithEpisodes =
+                if (!seasons.isNullOrEmpty()) {
+                    // Normal case
+                    seasons.map { seasonInfo ->
+                        XtreamTvSeriesDetail2.Season(
+                            info = seasonInfo,
+                            episodes = episodesMap[seasonInfo.seasonNumber].orEmpty()
+                        )
+                    }
+                } else {
+                    // 🔥 Xtream fallback (THIS FIXES YOUR ISSUE)
+                    episodesMap.map { (seasonNumber, episodes) ->
+                        XtreamTvSeriesDetail2.Season(
+                            info = XtreamTvSeriesDetail2.Season.Info(
+                                airDate = null,
+                                cover = seriesInfo?.cover,
+                                coverBig = seriesInfo?.cover,
+                                episodeCount = episodes.size,
+                                id = seasonNumber,
+                                name = "Season $seasonNumber",
+                                overview = null,
+                                seasonNumber = seasonNumber,
+                                voteAverage = null
+                            ),
+                            episodes = episodes.sortedBy { it?.episodeNum }
+                        )
+                    }.sortedBy { it.info?.seasonNumber }
                 }
 
-                val seasonsWithEpisodes = seasons?.map { seasonInfo ->
-                    val seasonNumber = seasonInfo.seasonNumber
-                    println("seasonNumber: $seasonNumber")
-                    val episodes = episodesMap?.get(seasonNumber) ?: emptyList()
-                    XtreamTvSeriesDetail2.Season(info = seasonInfo, episodes = episodes)
-                }
+            return XtreamTvSeriesDetail2(
+                info = seriesInfo,
+                seasons = seasonsWithEpisodes
+            )
 
-                XtreamTvSeriesDetail2(info = seriesInfo, seasons = seasonsWithEpisodes.orEmpty())
-            } else
-                decoder.decodeSerializableValue(serializer())
+        } catch (e: SerializationException) {
+            throw e
         } catch (e: Exception) {
-            throw SerializationException("Error deserializing XtreamTvSeriesDetail", e)
+            throw SerializationException(
+                "Error deserializing XtreamTvSeriesDetail2",
+                e
+            )
         }
     }
+
 
     override fun serialize(encoder: Encoder, value: XtreamTvSeriesDetail2) {
         encoder.encodeSerializableValue(serializer(), value)
@@ -104,7 +146,8 @@ internal object XtreamTvSeriesDetail2Serializer : KSerializer<XtreamTvSeriesDeta
             cover = cover,
             coverBig = coverBig,
             episodeCount = this["episode_count"]?.intOrNull() ?: 0,
-            id = this["id"]?.intOrNull()!!,
+            id = this["id"]?.intOrNull()
+                ?: throw SerializationException("Missing required field: id in season info"),
             name = title,
             overview = this["overview"]?.contentOrNull(),
             seasonNumber = this["season_number"]?.intOrNull() ?: 0,

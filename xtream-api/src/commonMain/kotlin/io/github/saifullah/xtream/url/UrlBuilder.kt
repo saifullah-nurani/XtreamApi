@@ -6,14 +6,19 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.parameters
 
 internal fun XtreamAuthCredentials.urlBuilder(): URLBuilder {
+    // Remove protocol prefix if present in host
+    val cleanHost = host.replace(Regex("^https?://"), "")
+    
+    val protocol = when (this.protocol.lowercase()) {
+        "http" -> URLProtocol.HTTP
+        "https" -> URLProtocol.HTTPS
+        else -> URLProtocol.HTTPS
+    }
+    
     return URLBuilder(
-        port = this@urlBuilder.port,
-        host = this@urlBuilder.host.replace("^http[s]?://".toRegex(), ""),
-        protocol = when (this@urlBuilder.protocol.lowercase()) {
-            "http" -> URLProtocol.HTTP
-            "https" -> URLProtocol.HTTPS
-            else -> URLProtocol.HTTPS
-        },
+        port = port,
+        host = cleanHost,
+        protocol = protocol,
         parameters = parameters {
             append("username", username)
             append("password", password)

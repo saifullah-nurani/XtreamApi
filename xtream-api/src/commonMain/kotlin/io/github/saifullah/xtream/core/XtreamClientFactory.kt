@@ -28,8 +28,6 @@ internal interface XtreamClientFactory {
                         url(credentials.urlBuilder().buildString())
                     }
                     header(HttpHeaders.Accept, ContentType.Application.Json)
-                    header(HttpHeaders.ContentType, ContentType.Application.Json)
-                    header(HttpHeaders.ContentType, ContentType.Video.Any)
                 }
                 if (clientConfig.useTimeout) {
                     install(HttpTimeout) {
@@ -40,7 +38,7 @@ internal interface XtreamClientFactory {
                 }
                 install(ContentNegotiation) {
                     json(Json {
-                        explicitNulls = true
+                        explicitNulls = false
                         ignoreUnknownKeys = true
                         prettyPrint = false
                         encodeDefaults = false
@@ -54,9 +52,7 @@ internal interface XtreamClientFactory {
                 if (clientConfig.maxRetries > 0) {
                     install(HttpRequestRetry) {
                         maxRetries = clientConfig.maxRetries
-                        delayMillis {
-                            clientConfig.retryDelayMillis
-                        }
+                        delayMillis { clientConfig.retryDelayMillis }
                     }
                 }
             }

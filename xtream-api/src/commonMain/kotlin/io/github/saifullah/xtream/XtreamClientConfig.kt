@@ -11,23 +11,38 @@ class XtreamClientConfig {
 
     internal var xtreamAuthCredentials: XtreamAuthCredentials? = null
     internal var httpClientBuilder: (() -> HttpClient)? = null
-    internal var httpClientConfig: (HttpClientConfig<*>.() -> Unit)? = null
     var followRedirects = true
     var expectSuccess = false
     var socketTimeoutMillis: Long = 60_000
+        set(value) {
+            require(value > 0) { "socketTimeoutMillis must be positive" }
+            field = value
+        }
     var connectTimeoutMillis: Long = 60_000
+        set(value) {
+            require(value > 0) { "connectTimeoutMillis must be positive" }
+            field = value
+        }
     var requestTimeoutMillis: Long = 60_000
+        set(value) {
+            require(value > 0) { "requestTimeoutMillis must be positive" }
+            field = value
+        }
     var useCache: Boolean = true
     var maxRetries: Int = 0
+        set(value) {
+            require(value >= 0) { "maxRetries must be non-negative" }
+            field = value
+        }
     var useTimeout: Boolean = true
     var retryDelayMillis: Long = 1000
+        set(value) {
+            require(value >= 0) { "retryDelayMillis must be non-negative" }
+            field = value
+        }
 
     fun auth(credentials: XtreamAuthCredentials.() -> Unit) {
         this.xtreamAuthCredentials = XtreamAuthCredentials().apply(credentials)
-    }
-
-    fun httpClient(block: HttpClientConfig<*> .() -> Unit) {
-        this.httpClientConfig = block
     }
 
     fun <T : HttpClientEngineConfig> httpClient(

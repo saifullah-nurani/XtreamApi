@@ -58,6 +58,8 @@ internal object XtreamTvSeriesDetailInfoSerializer : KSerializer<XtreamTvSeriesD
                 } else null
             } else decoder.decodeSerializableValue(serializer())
         } catch (e: SerializationException) {
+            throw e
+        } catch (e: Exception) {
             throw SerializationException("Error deserializing XtreamTvSeriesDetail", e)
         }
     }

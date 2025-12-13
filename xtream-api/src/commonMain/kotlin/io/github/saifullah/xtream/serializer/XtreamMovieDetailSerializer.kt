@@ -45,7 +45,8 @@ object XtreamMovieDetailSerializer : KSerializer<XtreamMovieDetail> {
             if (decoder is JsonDecoder) {
                 val jsonObject = decoder.safeJsonDecoder().decodeJsonElement().jsonObject
                 val info = jsonObject["info"]?.jsonObject?.jsonObjectOrNull()
-                val movieData = jsonObject["movie_data"]!!.jsonObject
+                val movieData = jsonObject["movie_data"]?.jsonObject
+                    ?: throw SerializationException("Missing required field: movie_data")
                 XtreamMovieDetail(
                     info = XtreamMovieDetail.Info(
                         casts = info?.casts,
@@ -73,12 +74,15 @@ object XtreamMovieDetailSerializer : KSerializer<XtreamMovieDetail> {
                         containerExtension = movieData.containerExtension,
                         customSid = movieData.customSid,
                         directSource = movieData.directSource,
-                        streamId = movieData["stream_id"]?.longOrNull()!!,
+                        streamId = movieData["stream_id"]?.longOrNull()
+                            ?: throw SerializationException("Missing required field: stream_id in movie_data"),
                         title = movieData.title
                     )
                 )
             } else decoder.decodeSerializableValue(serializer())
         } catch (e: SerializationException) {
+            throw e
+        } catch (e: Exception) {
             throw SerializationException("Error deserializing XtreamMovieDetail", e)
         }
     }

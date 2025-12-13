@@ -43,7 +43,7 @@ kotlin {
 
 android {
     namespace = "io.github.saifullah.xtream"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         minSdk = 21
     }
@@ -61,7 +61,7 @@ tasks.withType<KotlinCompile> {
 }
 
 mavenPublishing {
-    coordinates("io.github.saifullah-nurani", "xtream-api", "0.1.3")
+    coordinates("io.github.saifullah-nurani", "xtream-api", "0.1.6")
     pom {
         name.set("XtreamApi")
         description.set("XtreamApi is a Kotlin library designed to interact with Xtream Codes API, allowing seamless retrieval of movies, series, and live TV streams.")

@@ -56,7 +56,8 @@ internal object XtreamMovieSerializer : KSerializer<XtreamMovie> {
                     rating5based = jsonObject.rating5Based,
                     releaseDate = jsonObject.releaseDate,
                     streamIcon = jsonObject.streamIcon,
-                    streamId = jsonObject["stream_id"]?.longOrNull()!!,
+                    streamId = jsonObject["stream_id"]?.longOrNull()
+                        ?: throw SerializationException("Missing required field: stream_id"),
                     streamType = StreamType.Movie,
                     title = jsonObject.title,
                     youtubeTrailer = jsonObject.youtubeTrailer,
@@ -64,6 +65,8 @@ internal object XtreamMovieSerializer : KSerializer<XtreamMovie> {
                 )
             } else decoder.decodeSerializableValue(serializer())
         } catch (e: SerializationException) {
+            throw e
+        } catch (e: Exception) {
             throw SerializationException("Error deserializing XtreamMovie", e)
         }
     }

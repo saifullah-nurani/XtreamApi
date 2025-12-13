@@ -24,30 +24,29 @@ internal interface XtreamApi {
      * are provided) or a default URL. It allows appending an optional `action`
      * parameter and additional custom query parameters using a lambda.
      *
-     * @param authentication Optional `XtreamAuthentication` object for
+     * @param credentials Optional `XtreamAuthCredentials` object for
      *    authenticated requests.
      * @param action Optional action query parameter to append.
      * @param parameterBuilder Lambda to append additional query parameters to
      *    the URL.
-     *    provided or incomplete.
-     * @return The fully constructed URL as a string.
      */
     fun HttpRequestBuilder.url(
         credentials: XtreamAuthCredentials?,
         action: String? = null,
         parameterBuilder: ParametersBuilder.() -> Unit = {}
     ) {
-        credentials?.takeIf { it.host.isNotBlank() && it.username.isNotBlank() && it.password.isNotBlank() }
-            ?.urlBuilder()?.let { newUrl ->
-                // Append the action to the authentication-based URL
-                action?.let { newUrl.parameters.append("action", it) }
-                newUrl.parameters.parameterBuilder()
-                url(newUrl.buildString())
-            } ?: run {
+        val isValidCredentials = credentials?.isValid() ?: false
+
+        if (isValidCredentials) {
+            val urlBuilder = credentials!!.urlBuilder()
+            action?.let { urlBuilder.parameters.append("action", it) }
+            urlBuilder.parameters.parameterBuilder()
+            url(urlBuilder.buildString())
+        } else {
             // Fallback to default URL with action parameter
             url {
-                action?.let { it1 -> parameters.append("action", it1) }
-                parameters.parameterBuilder()
+                action?.let { parameters.append("action", it) }
+                parameterBuilder()
             }
         }
     }

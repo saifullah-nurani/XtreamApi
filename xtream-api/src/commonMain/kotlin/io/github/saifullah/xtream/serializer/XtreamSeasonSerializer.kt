@@ -32,7 +32,8 @@ object XtreamSeasonSerializer : KSerializer<XtreamSeason?> {
                         cover = jsonObject.cover,
                         coverBig = jsonObject.coverBig,
                         episodeCount = jsonObject["episode_count"]?.intOrNull() ?: 0,
-                        id = jsonObject["id"]?.intOrNull()!!,
+                        id = jsonObject["id"]?.intOrNull()
+                            ?: throw SerializationException("Missing required field: id"),
                         name = jsonObject.title,
                         overview = jsonObject["overview"]?.contentOrNull(),
                         seasonNumber = jsonObject["season_number"]?.intOrNull() ?: 0,
@@ -41,6 +42,8 @@ object XtreamSeasonSerializer : KSerializer<XtreamSeason?> {
                 } else null
             } else decoder.decodeSerializableValue(serializer())
         } catch (e: SerializationException) {
+            throw e
+        } catch (e: Exception) {
             throw SerializationException("Error deserializing XtreamSeason", e)
         }
     }

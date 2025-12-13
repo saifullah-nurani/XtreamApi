@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class XtreamAuth(
     @SerialName("server_info") val serverInfo: ServerInfo,
-    @SerialName("user_info") val userInfo: UserInfo
+    @SerialName("user_info") val userInfo: UserInfo,
 ) {
     @Serializable
     data class ServerInfo(
@@ -19,8 +19,8 @@ data class XtreamAuth(
         @SerialName("timestamp_now") val timestampNow: Int, // 1738744856
         val timezone: String, // Europe/London
         val url: String, // example.com
-        val version: String?, // 1.5.12
-        val xui: Boolean? // true
+        val version: String? = null, // 1.5.12
+        val xui: Boolean? = null, // true
     )
 
     @Serializable
@@ -32,10 +32,10 @@ data class XtreamAuth(
         @SerialName("exp_date") val expDate: Long, // 1743068355
         @SerialName("is_trial") val isTrial: String?,
         @SerialName("max_connections")
-        val maxConnections: String?, // 1
+        val maxConnections: String?=null, // 1
         val message: String, // Welcome to xyz
         val password: String, //password
         val status: String, // Active
-        val username: String // username
+        val username: String, // username
     )
 }
