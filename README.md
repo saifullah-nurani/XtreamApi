@@ -23,7 +23,7 @@
 - **Kotlin**: 2.1.0 or higher
 - **Android**: Min SDK 21, Target SDK 36
 - **Gradle**: 8.0 or higher
-- **JDK**: 21 or higher (for JVM target)
+- **JDK**: 17 or higher (for JVM target)
 
 ## 📦 Installation
 
@@ -35,7 +35,7 @@ Add the dependency to your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("io.github.saifullah-nurani:xtream-api:0.1.6")
+    implementation("io.github.saifullah-nurani:xtream-api:1.0.0")
 }
 ```
 
@@ -49,7 +49,7 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.saifullah-nurani:xtream-api:0.1.6")
+            implementation("io.github.saifullah-nurani:xtream-api:1.0.0")
         }
     }
 }
