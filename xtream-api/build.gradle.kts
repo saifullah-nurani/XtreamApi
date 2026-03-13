@@ -10,7 +10,11 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(17)
+
     androidTarget()
+    jvm()
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -21,7 +25,6 @@ kotlin {
             isStatic = true
         }
     }
-    jvm()
 
     sourceSets {
         commonMain.dependencies {
@@ -29,39 +32,56 @@ kotlin {
             api(libs.ktor.client.core)
             api(libs.ktor.client.content.negotiation)
         }
+
         androidMain.dependencies {
             api(libs.ktor.client.okhttp)
         }
+
         iosMain.dependencies {
             api(libs.ktor.client.darwin)
         }
+
         jvmMain.dependencies {
             api(libs.ktor.client.okhttp)
+        }
+    }
+
+    sourceSets.all {
+        languageSettings {
+            optIn("kotlinx.serialization.ExperimentalSerializationApi")
         }
     }
 }
 
 android {
     namespace = "io.github.saifullah.xtream"
-    compileSdk = 36
+    compileSdk = 35
+
     defaultConfig {
         minSdk = 21
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 }
 
 tasks.withType<KotlinCompile> {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_21)
+        jvmTarget.set(JvmTarget.JVM_17)
         freeCompilerArgs.add("-Xjvm-default=all")
     }
 }
 
 mavenPublishing {
-    coordinates("io.github.saifullah-nurani", "xtream-api", "0.1.7")
+    coordinates("io.github.saifullah-nurani", "xtream-api", "1.0.0")
     pom {
         name.set("XtreamApi")
         description.set("XtreamApi is a Kotlin library designed to interact with Xtream Codes API, allowing seamless retrieval of movies, series, and live TV streams.")

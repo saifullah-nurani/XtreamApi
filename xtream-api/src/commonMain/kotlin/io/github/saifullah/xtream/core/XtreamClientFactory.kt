@@ -12,53 +12,78 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.encodedPath
+import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.appendAll
 import kotlinx.serialization.json.Json
 
-internal interface XtreamClientFactory {
+internal object XtreamClientFactory {
 
-    companion object {
-        fun create(clientConfig: XtreamClientConfig): HttpClient {
-            val httpClientConfig: HttpClientConfig<*>.() -> Unit = {
-                expectSuccess = clientConfig.expectSuccess
-                followRedirects = clientConfig.followRedirects
-                defaultRequest {
-                    val credentials = clientConfig.xtreamAuthCredentials
-                    if (credentials != null) {
-                        url(credentials.urlBuilder().buildString())
+    fun create(clientConfig: XtreamClientConfig): HttpClient {
+
+        val httpClientConfig: HttpClientConfig<*>.() -> Unit = {
+
+            expectSuccess = clientConfig.expectSuccess
+            followRedirects = clientConfig.followRedirects
+
+            defaultRequest {
+
+                val credentials = clientConfig.xtreamAuthCredentials
+
+                if (credentials != null) {
+                    val base = credentials.urlBuilder()
+
+                    url {
+                        protocol = base.protocol
+                        host = base.host
+                        port = base.port
+                        encodedPath = base.encodedPath
+                        parameters.appendAll(base.parameters)
                     }
-                    header(HttpHeaders.Accept, ContentType.Application.Json)
-                }
-                if (clientConfig.useTimeout) {
-                    install(HttpTimeout) {
-                        socketTimeoutMillis = clientConfig.socketTimeoutMillis
-                        connectTimeoutMillis = clientConfig.connectTimeoutMillis
-                        requestTimeoutMillis = clientConfig.requestTimeoutMillis
-                    }
-                }
-                install(ContentNegotiation) {
-                    json(Json {
-                        explicitNulls = false
-                        ignoreUnknownKeys = true
-                        prettyPrint = false
-                        encodeDefaults = false
-                        isLenient = true
-                    })
                 }
 
-                if (clientConfig.useCache) {
-                    install(HttpCache)
-                }
-                if (clientConfig.maxRetries > 0) {
-                    install(HttpRequestRetry) {
-                        maxRetries = clientConfig.maxRetries
-                        delayMillis { clientConfig.retryDelayMillis }
-                    }
+                header(HttpHeaders.Accept, ContentType.Application.Json)
+                header(HttpHeaders.UserAgent, "XtreamApi")
+            }
+
+            if (clientConfig.useTimeout) {
+                install(HttpTimeout) {
+                    socketTimeoutMillis = clientConfig.socketTimeoutMillis
+                    connectTimeoutMillis = clientConfig.connectTimeoutMillis
+                    requestTimeoutMillis = clientConfig.requestTimeoutMillis
                 }
             }
-            return clientConfig.httpClientBuilder?.invoke()?.config(httpClientConfig)
-                ?: io.github.saifullah.xtream.core.HttpClient(httpClientConfig)
+
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                        explicitNulls = false
+                        isLenient = true
+                    }
+                )
+            }
+
+            if (clientConfig.useCache) {
+                install(HttpCache)
+            }
+
+            if (clientConfig.maxRetries > 0) {
+                install(HttpRequestRetry) {
+                    maxRetries = clientConfig.maxRetries
+                    retryIf { _, response ->
+                        !response.status.isSuccess()
+                    }
+                    delayMillis { clientConfig.retryDelayMillis }
+                }
+            }
         }
+
+        val client = clientConfig.httpClientBuilder?.invoke()
+            ?: HttpClient {}
+
+        return client.config(httpClientConfig)
     }
 }
 

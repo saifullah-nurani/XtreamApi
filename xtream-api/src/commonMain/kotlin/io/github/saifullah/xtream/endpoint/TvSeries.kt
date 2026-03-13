@@ -29,8 +29,8 @@ class TvSeries internal constructor(
      *
      * @return A list of [XtreamTvSeries] representing the available TV series.
      *
-     * @throws ClientRequestException If the request fails due to an HTTP error.
-     * @throws SerializationException If the response cannot be parsed.
+     * @throws io.ktor.client.plugins.ClientRequestException If the request fails due to an HTTP error.
+     * @throws kotlinx.serialization.SerializationException If the response cannot be parsed.
      */
     suspend fun getTvSeries(credentials: XtreamAuthCredentials? = null): List<XtreamTvSeries> {
         return httpClient.get {
@@ -46,8 +46,8 @@ class TvSeries internal constructor(
      *
      * @return [XtreamTvSeriesDetail] containing detailed TV series information.
      *
-     * @throws ClientRequestException If the request fails due to an HTTP error.
-     * @throws SerializationException If the response cannot be parsed.
+     * @throws io.ktor.client.plugins.ClientRequestException If the request fails due to an HTTP error.
+     * @throws kotlinx.serialization.SerializationException If the response cannot be parsed.
      */
     suspend fun getTvSeriesDetail(
         seriesId: Long, credentials: XtreamAuthCredentials? = null
@@ -69,8 +69,8 @@ class TvSeries internal constructor(
      *
      * @return [XtreamTvSeriesDetail2] containing additional TV series details.
      *
-     * @throws ClientRequestException If the request fails due to an HTTP error.
-     * @throws SerializationException If the response cannot be parsed.
+     * @throws io.ktor.client.plugins.ClientRequestException If the request fails due to an HTTP error.
+     * @throws kotlinx.serialization.SerializationException If the response cannot be parsed.
      */
     suspend fun getTvSeriesDetail2(
         seriesId: Long, credentials: XtreamAuthCredentials? = null
@@ -89,8 +89,8 @@ class TvSeries internal constructor(
      *
      * @return A list of [XtreamCategory] representing available TV series categories.
      *
-     * @throws ClientRequestException If the request fails due to an HTTP error.
-     * @throws SerializationException If the response cannot be parsed.
+     * @throws io.ktor.client.plugins.ClientRequestException If the request fails due to an HTTP error.
+     * @throws kotlinx.serialization.SerializationException If the response cannot be parsed.
      */
     suspend fun getTvSeriesCategories(
         credentials: XtreamAuthCredentials? = null
@@ -108,8 +108,8 @@ class TvSeries internal constructor(
      *
      * @return A list of [XtreamTvSeries] that belong to the specified category.
      *
-     * @throws ClientRequestException If the request fails due to an HTTP error.
-     * @throws SerializationException If the response cannot be parsed.
+     * @throws io.ktor.client.plugins.ClientRequestException If the request fails due to an HTTP error.
+     * @throws kotlinx.serialization.SerializationException If the response cannot be parsed.
      */
     suspend fun getTvSeriesByCategory(
         categoryId: Int, credentials: XtreamAuthCredentials? = null

@@ -26,8 +26,8 @@ class Movie internal constructor(override val httpClient: HttpClient) : XtreamAp
      *
      * @return A list of [XtreamMovie] representing the available movies.
      *
-     * @throws ClientRequestException If the request fails due to an HTTP error.
-     * @throws SerializationException If the response cannot be parsed.
+     * @throws io.ktor.client.plugins.ClientRequestException If the request fails due to an HTTP error.
+     * @throws kotlinx.serialization.SerializationException If the response cannot be parsed.
      */
     suspend fun getMovies(credentials: XtreamAuthCredentials? = null): List<XtreamMovie> {
         return httpClient.get {
@@ -43,8 +43,8 @@ class Movie internal constructor(override val httpClient: HttpClient) : XtreamAp
      *
      * @return [XtreamMovieDetail] containing detailed movie information.
      *
-     * @throws ClientRequestException If the request fails due to an HTTP error.
-     * @throws SerializationException If the response cannot be parsed.
+     * @throws io.ktor.client.plugins.ClientRequestException If the request fails due to an HTTP error.
+     * @throws kotlinx.serialization.SerializationException If the response cannot be parsed.
      */
     suspend fun getMovieDetail(
         streamId: Long,
@@ -64,8 +64,8 @@ class Movie internal constructor(override val httpClient: HttpClient) : XtreamAp
      *
      * @return A list of [XtreamCategory] representing available movie categories.
      *
-     * @throws ClientRequestException If the request fails due to an HTTP error.
-     * @throws SerializationException If the response cannot be parsed.
+     * @throws io.ktor.client.plugins.ClientRequestException If the request fails due to an HTTP error.
+     * @throws kotlinx.serialization.SerializationException If the response cannot be parsed.
      */
     suspend fun getMovieCategories(
         credentials: XtreamAuthCredentials? = null
@@ -83,8 +83,8 @@ class Movie internal constructor(override val httpClient: HttpClient) : XtreamAp
      *
      * @return A list of [XtreamMovie] that belong to the specified category.
      *
-     * @throws ClientRequestException If the request fails due to an HTTP error.
-     * @throws SerializationException If the response cannot be parsed.
+     * @throws io.ktor.client.plugins.ClientRequestException If the request fails due to an HTTP error.
+     * @throws kotlinx.serialization.SerializationException If the response cannot be parsed.
      */
     suspend fun getMoviesByCategory(
         categoryId: Int,

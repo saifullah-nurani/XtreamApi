@@ -7,10 +7,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class XtreamTvSeriesDetail(
     val episodes: Map<Int, List<XtreamEpisode?>>,
+    @Serializable(with = XtreamTvSeriesDetailInfoSerializer::class)
     val info: Info?,
     val seasons: List<XtreamSeason?>
 ) {
-    @Serializable(with = XtreamTvSeriesDetailInfoSerializer::class)
     data class Info(
         @SerialName("backdrop_path") val backdropPaths: List<String>?,
         val casts: List<String>?, // Carson Daly, Adam Levine, John Legend, Michael Bublé, Kelsea Ballerini

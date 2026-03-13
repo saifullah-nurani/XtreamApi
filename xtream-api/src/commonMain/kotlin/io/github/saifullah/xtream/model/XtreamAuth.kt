@@ -19,23 +19,23 @@ data class XtreamAuth(
         @SerialName("timestamp_now") val timestampNow: Int, // 1738744856
         val timezone: String, // Europe/London
         val url: String, // example.com
-        val version: String? = null, // 1.5.12
-        val xui: Boolean? = null, // true
+        val version: String?, // 1.5.12
+        val xui: Boolean?, // true
     )
 
     @Serializable
     data class UserInfo(
-        @SerialName("active_cons") val activeCons: String?, // 0
-        @SerialName("allowed_output_formats") val allowedOutputFormats: List<String>?,
-        val auth: Int, // 1
-        @SerialName("created_at") val createdAt: Long, // 1709026755
-        @SerialName("exp_date") val expDate: Long, // 1743068355
-        @SerialName("is_trial") val isTrial: String?,
+        @SerialName("active_cons") val activeCons: String?=null, // 0
+        @SerialName("allowed_output_formats") val allowedOutputFormats: List<String>?=null,
+        val auth: Int = 0, // 1
+        @SerialName("created_at") val createdAt: Long = 0L, // 1709026755
+        @SerialName("exp_date") val expDate: Long = 0L, // 1743068355
+        @SerialName("is_trial") val isTrial: String? = null,
         @SerialName("max_connections")
         val maxConnections: String?=null, // 1
-        val message: String, // Welcome to xyz
-        val password: String, //password
-        val status: String, // Active
-        val username: String, // username
+        val message: String = "", // Welcome to xyz
+        val password: String = "", //password
+        val status: String = "", // Active
+        val username: String = "", // username
     )
 }

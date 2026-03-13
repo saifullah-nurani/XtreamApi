@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class XtreamCategory(
-    @SerialName("category_id") val categoryId: String, // 838
-    @SerialName("category_name") val categoryName: String, // 2024
-    @SerialName("parent_id") val parentId: Int // 0
+    @SerialName("category_id") val categoryId: String = "", // 838
+    @SerialName("category_name") val categoryName: String = "", // 2024
+    @SerialName("parent_id") val parentId: Int // 0 = 0
 )

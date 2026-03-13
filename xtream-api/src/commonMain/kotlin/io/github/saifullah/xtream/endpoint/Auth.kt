@@ -23,8 +23,8 @@ class Auth internal constructor(override val httpClient: HttpClient) : XtreamApi
      *
      * @return [XtreamAuth] containing authentication response details.
      *
-     * @throws ClientRequestException if the request fails due to an HTTP error.
-     * @throws SerializationException if the response cannot be parsed.
+     * @throws io.ktor.client.plugins.ClientRequestException if the request fails due to an HTTP error.
+     * @throws kotlinx.serialization.SerializationException if the response cannot be parsed.
      */
     suspend operator fun invoke(credentials: XtreamAuthCredentials? = null): XtreamAuth {
         return httpClient.get { url(credentials) }.body<XtreamAuth>()

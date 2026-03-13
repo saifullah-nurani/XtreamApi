@@ -84,7 +84,4 @@ internal val JsonObject.num: Int
 internal val JsonObject.streamIcon: String?
     get() = this["stream_icon"]?.contentOrNull()
 
-//internal val JsonObject.streamType: String
-//    get() = this["stream_type"]?.contentOrNull()
-//        ?: throw SerializationException("Missing required field 'stream_type'")
 
